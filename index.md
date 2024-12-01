@@ -11,3 +11,6 @@ If you are interested in chatting ML, biology, statistics or anything else - rea
 
 # CV
 Check out my research and experience [here](./cv.pdf)
+
+# Projects
+Read my recent research papers [here](./_papers.md)

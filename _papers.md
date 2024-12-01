@@ -11,4 +11,4 @@ Antigen specific CDR3 modelling using a classifier-free latent diffusion model a
 
 # Steering Small Language Models with Sparse Auto-Encoded Features
 Identifying semantically meaningful activations in sparse reconstructions of latent embeddings of GPT2. We then demosntrate you can steer outputs without the need for finetuning by 
-artificially boosting and supressing features Read the paper [here](./papers/SAE_Steering.pdf)
+artificially boosting and supressing features Read the paper [here](./papers/sae_steering.pdf)

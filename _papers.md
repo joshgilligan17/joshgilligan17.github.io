@@ -6,7 +6,7 @@ Some of my recent projects
 
 # Latent Diffusion for Antibody Design
 
-Antigen specific CDR3 modelling using a classifier-free latent diffusion model and ESMFold embeddings. Read the paper [here](./papers/ESMDiff.pdf)
+Antigen specific CDR3 modeling using a classifier-free latent diffusion model and ESMFold embeddings. Read the paper [here](./papers/ESMDiff.pdf)
 
 
 # Steering Small Language Models with Sparse Auto-Encoded Features

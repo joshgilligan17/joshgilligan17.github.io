@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="{{ site.lang | default: 'en-US' }}">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    {% seo %}
+    <link rel="stylesheet" href="{{ '/assets/css/style.css?v=' | append: site.github.build_revision | relative_url }}">
+    {% include head-custom.html %}
+  </head>
+  <body class="{% if page.url contains 'papers' %}page--research{% else %}page--profile{% endif %}">
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <canvas id="bio-field" aria-hidden="true"></canvas>
+
+    <div class="site-shell">
+      <header class="site-header" data-reveal>
+        <a class="identity" href="{{ '/' | relative_url }}" aria-label="Joshua Gilligan, home">
+          <span class="identity__name">Joshua Gilligan</span>
+          <span class="identity__discipline">Machine learning × biomolecular design</span>
+        </a>
+
+        <nav class="site-nav" aria-label="Primary navigation">
+          <a href="{{ '/' | relative_url }}" {% if page.url == '/' %}aria-current="page"{% endif %}>About</a>
+          <a href="{{ '/papers.html' | relative_url }}" {% if page.url contains 'papers' %}aria-current="page"{% endif %}>Research</a>
+          <a href="{{ '/cv.pdf' | relative_url }}">CV <span aria-hidden="true">↗</span></a>
+          <a href="https://github.com/joshgilligan17">GitHub <span aria-hidden="true">↗</span></a>
+        </nav>
+      </header>
+
+      <main id="main-content" class="page-frame">
+        <aside class="profile-panel" aria-label="Research profile">
+          <figure class="portrait" data-reveal>
+            <div class="portrait__image">
+              <img src="{{ '/logo.jpg' | relative_url }}" alt="Portrait of Joshua Gilligan">
+              <span class="portrait__scan" aria-hidden="true"></span>
+            </div>
+            <figcaption>
+              <span class="profile-status"><i aria-hidden="true"></i> Stanford Bioengineering</span>
+            </figcaption>
+          </figure>
+
+          <div class="focus-note" data-reveal>
+            <span class="focus-note__label">Current focus</span>
+            <p>Generative models for functional biomolecular design.</p>
+            <div class="sequence" aria-hidden="true">
+              <span>A</span><span>C</span><span>G</span><span>T</span>
+              <i></i>
+              <span>0</span><span>1</span><span>1</span><span>0</span>
+            </div>
+          </div>
+        </aside>
+
+        <article class="content-panel">
+          <div class="page-marker" data-reveal>
+            {% if page.url contains 'papers' %}
+              <span>Selected research / 02</span>
+            {% else %}
+              <span>Research profile / 01</span>
+            {% endif %}
+            <span class="page-marker__signal"><i aria-hidden="true"></i> AI + biology</span>
+          </div>
+
+          <div class="content">
+            {{ content }}
+          </div>
+        </article>
+      </main>
+
+      <footer class="site-footer" data-reveal>
+        <span>Joshua Gilligan</span>
+        <span>Generative biology <i aria-hidden="true">/</i> {{ site.time | date: '%Y' }}</span>
+        <a href="https://github.com/joshgilligan17">GitHub <span aria-hidden="true">↗</span></a>
+      </footer>
+    </div>
+
+    <script src="{{ '/assets/js/bio-field.js' | relative_url }}" defer></script>
+  </body>
+</html>

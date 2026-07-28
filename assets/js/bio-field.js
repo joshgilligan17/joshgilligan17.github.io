@@ -12,12 +12,12 @@
   var width = 0;
   var height = 0;
   var pixelRatio = 1;
-  var nodes = [];
+  var lanes = [];
   var frameId = 0;
   var lastFrame = 0;
   var running = false;
   var pointer = { x: 0, y: 0, active: false };
-  var tokens = ["A", "C", "G", "T", "0", "1"];
+  var sequenceTokens = ["A", "C", "G", "T", "V", "L"];
 
   function seededRandom(seed) {
     var value = seed >>> 0;
@@ -31,23 +31,55 @@
     };
   }
 
+  function tokenFor(index, count, laneIndex) {
+    var progress = index / Math.max(1, count - 1);
+
+    if (progress < 0.38) {
+      return index % 2 === 0
+        ? sequenceTokens[(index + laneIndex * 2) % sequenceTokens.length]
+        : "";
+    }
+
+    if (progress < 0.78) {
+      return index % 3 === 1 ? "z" + ((index + laneIndex) % 8) : "";
+    }
+
+    return index === count - 2 ? "f↑" : "";
+  }
+
   function buildField() {
     var random = seededRandom(1701);
-    var area = width * height;
-    var count = Math.max(30, Math.min(76, Math.round(area / 22000)));
+    var laneCount = width < 700 ? 2 : 3;
+    var pointCount = width < 700 ? 8 : 13;
 
-    nodes = [];
+    lanes = [];
 
-    for (var index = 0; index < count; index += 1) {
-      nodes.push({
-        u: random(),
-        v: random(),
-        phase: random() * Math.PI * 2,
-        speed: 0.16 + random() * 0.22,
-        drift: 5 + random() * 13,
-        depth: 0.45 + random() * 0.7,
-        token: index % 9 === 0 ? tokens[index % tokens.length] : "",
-      });
+    for (var laneIndex = 0; laneIndex < laneCount; laneIndex += 1) {
+      var lane = [];
+      var baseY =
+        laneCount === 1 ? 0.5 : 0.18 + (laneIndex / (laneCount - 1)) * 0.64;
+
+      for (var pointIndex = 0; pointIndex < pointCount; pointIndex += 1) {
+        lane.push({
+          u: (pointIndex + 0.45) / pointCount,
+          v:
+            baseY +
+            Math.sin(pointIndex * 0.82 + laneIndex * 1.4) * 0.022 +
+            (random() - 0.5) * 0.024,
+          phase: random() * Math.PI * 2,
+          speed: 0.08 + random() * 0.08,
+          drift: 2 + random() * 4,
+          token: tokenFor(pointIndex, pointCount, laneIndex),
+          stage:
+            pointIndex / (pointCount - 1) < 0.38
+              ? 0
+              : pointIndex / (pointCount - 1) < 0.78
+                ? 1
+                : 2,
+        });
+      }
+
+      lanes.push(lane);
     }
   }
 
@@ -69,21 +101,22 @@
     if (reducedMotion.matches) draw(0);
   }
 
-  function positionFor(node, time) {
-    var x = node.u * width + Math.sin(time * node.speed + node.phase) * node.drift;
+  function positionFor(point, time) {
+    var x =
+      point.u * width +
+      Math.sin(time * point.speed + point.phase) * point.drift;
     var y =
-      node.v * height +
-      Math.cos(time * node.speed * 0.82 + node.phase) * node.drift;
+      point.v * height +
+      Math.cos(time * point.speed * 0.72 + point.phase) * point.drift;
 
     if (pointer.active) {
       var deltaX = pointer.x - x;
       var deltaY = pointer.y - y;
       var distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
-      var radius = 180;
+      var radius = 150;
 
       if (distance < radius && distance > 0) {
-        var influence = Math.pow(1 - distance / radius, 2) * 0.055;
-        x += deltaX * influence;
+        var influence = Math.pow(1 - distance / radius, 2) * 0.025;
         y += deltaY * influence;
       }
     }
@@ -91,70 +124,120 @@
     return { x: x, y: y };
   }
 
+  function drawPoint(point, position) {
+    context.fillStyle =
+      point.stage === 1
+        ? "rgba(0, 115, 230, 0.16)"
+        : "rgba(12, 32, 67, 0.12)";
+
+    if (point.stage === 0) {
+      context.fillRect(position.x - 1, position.y - 1, 2, 2);
+    } else if (point.stage === 1) {
+      context.beginPath();
+      context.arc(position.x, position.y, 1.25, 0, Math.PI * 2);
+      context.fill();
+    } else {
+      context.save();
+      context.translate(position.x, position.y);
+      context.rotate(Math.PI / 4);
+      context.fillRect(-1.2, -1.2, 2.4, 2.4);
+      context.restore();
+    }
+
+    if (point.token) {
+      context.font = "500 7px 'IBM Plex Mono', monospace";
+      context.fillStyle = "rgba(12, 32, 67, 0.11)";
+      context.fillText(point.token, position.x + 6, position.y - 6);
+    }
+  }
+
   function draw(time) {
     context.clearRect(0, 0, width, height);
 
-    var positions = [];
-    var connectionDistance = Math.min(158, Math.max(116, width * 0.11));
+    var positionsByLane = [];
 
-    for (var index = 0; index < nodes.length; index += 1) {
-      positions.push(positionFor(nodes[index], time));
+    for (var laneIndex = 0; laneIndex < lanes.length; laneIndex += 1) {
+      var lanePositions = [];
+
+      for (var pointIndex = 0; pointIndex < lanes[laneIndex].length; pointIndex += 1) {
+        lanePositions.push(positionFor(lanes[laneIndex][pointIndex], time));
+      }
+
+      positionsByLane.push(lanePositions);
     }
 
-    context.lineWidth = 0.65;
+    context.lineWidth = 0.6;
+    context.setLineDash([1, 6]);
 
-    for (var first = 0; first < nodes.length; first += 1) {
-      for (var second = first + 1; second < nodes.length; second += 1) {
-        var deltaX = positions[first].x - positions[second].x;
-        var deltaY = positions[first].y - positions[second].y;
-        var distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+    for (var drawLaneIndex = 0; drawLaneIndex < lanes.length; drawLaneIndex += 1) {
+      var positions = positionsByLane[drawLaneIndex];
 
-        if (distance < connectionDistance) {
-          var opacity =
-            (1 - distance / connectionDistance) *
-            0.12 *
-            Math.min(nodes[first].depth, nodes[second].depth);
+      context.beginPath();
+      context.moveTo(positions[0].x, positions[0].y);
 
+      for (var lineIndex = 1; lineIndex < positions.length; lineIndex += 1) {
+        context.lineTo(positions[lineIndex].x, positions[lineIndex].y);
+      }
+
+      context.strokeStyle = "rgba(0, 115, 230, 0.075)";
+      context.stroke();
+
+      for (var nodeIndex = 0; nodeIndex < lanes[drawLaneIndex].length; nodeIndex += 1) {
+        drawPoint(lanes[drawLaneIndex][nodeIndex], positions[nodeIndex]);
+      }
+    }
+
+    context.setLineDash([]);
+
+    if (lanes.length > 1) {
+      context.lineWidth = 0.45;
+
+      for (var crossLane = 0; crossLane < lanes.length - 1; crossLane += 1) {
+        for (
+          var crossIndex = 2;
+          crossIndex < positionsByLane[crossLane].length;
+          crossIndex += 4
+        ) {
           context.beginPath();
-          context.moveTo(positions[first].x, positions[first].y);
-          context.lineTo(positions[second].x, positions[second].y);
-          context.strokeStyle = "rgba(0, 115, 230, " + opacity + ")";
+          context.moveTo(
+            positionsByLane[crossLane][crossIndex].x,
+            positionsByLane[crossLane][crossIndex].y
+          );
+          context.lineTo(
+            positionsByLane[crossLane + 1][crossIndex].x,
+            positionsByLane[crossLane + 1][crossIndex].y
+          );
+          context.strokeStyle = "rgba(12, 32, 67, 0.035)";
           context.stroke();
         }
       }
     }
 
-    for (var nodeIndex = 0; nodeIndex < nodes.length; nodeIndex += 1) {
-      var node = nodes[nodeIndex];
-      var position = positions[nodeIndex];
-      var radius = 0.8 + node.depth * 0.85;
-      var pointerBoost = 0;
-
-      if (pointer.active) {
-        var pointerX = pointer.x - position.x;
-        var pointerY = pointer.y - position.y;
-        var pointerDistance = Math.sqrt(pointerX * pointerX + pointerY * pointerY);
-        pointerBoost = Math.max(0, 1 - pointerDistance / 150);
-      }
+    for (var pulseLane = 0; pulseLane < lanes.length; pulseLane += 1) {
+      var laneProgress = (time * 0.028 + pulseLane * 0.29) % 1;
+      var segmentFloat =
+        laneProgress * (positionsByLane[pulseLane].length - 1);
+      var segmentIndex = Math.floor(segmentFloat);
+      var segmentMix = segmentFloat - segmentIndex;
+      var start = positionsByLane[pulseLane][segmentIndex];
+      var end =
+        positionsByLane[pulseLane][
+          Math.min(segmentIndex + 1, positionsByLane[pulseLane].length - 1)
+        ];
+      var pulseX = start.x + (end.x - start.x) * segmentMix;
+      var pulseY = start.y + (end.y - start.y) * segmentMix;
 
       context.beginPath();
-      context.arc(position.x, position.y, radius + pointerBoost * 1.1, 0, Math.PI * 2);
-      context.fillStyle =
-        "rgba(0, 115, 230, " + (0.11 + node.depth * 0.12 + pointerBoost * 0.2) + ")";
+      context.arc(pulseX, pulseY, 1.6, 0, Math.PI * 2);
+      context.fillStyle = "rgba(0, 115, 230, 0.24)";
       context.fill();
-
-      if (node.token) {
-        context.font = "500 8px 'IBM Plex Mono', monospace";
-        context.fillStyle = "rgba(12, 32, 67, " + (0.07 + node.depth * 0.045) + ")";
-        context.fillText(node.token, position.x + 7, position.y - 7);
-      }
     }
   }
 
   function animate(timestamp) {
     if (!running) return;
 
-    if (timestamp - lastFrame > 32) {
+    if (timestamp - lastFrame > 40) {
       draw(timestamp / 1000);
       lastFrame = timestamp;
     }
@@ -175,6 +258,7 @@
 
   function handleMotionPreference() {
     stop();
+
     if (reducedMotion.matches) {
       pointer.active = false;
       draw(0);
@@ -190,7 +274,7 @@
     document.documentElement.classList.add("motion-ready");
 
     for (var index = 0; index < revealItems.length; index += 1) {
-      revealItems[index].style.setProperty("--reveal-index", String(index % 7));
+      revealItems[index].style.setProperty("--reveal-index", String(index % 6));
     }
 
     if (!("IntersectionObserver" in window)) {
@@ -209,7 +293,7 @@
           }
         }
       },
-      { rootMargin: "0px 0px -7% 0px", threshold: 0.08 }
+      { rootMargin: "0px 0px -5% 0px", threshold: 0.06 }
     );
 
     for (var observerIndex = 0; observerIndex < revealItems.length; observerIndex += 1) {

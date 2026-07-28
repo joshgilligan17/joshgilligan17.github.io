@@ -17,7 +17,7 @@
       <header class="site-header" data-reveal>
         <a class="identity" href="{{ '/' | relative_url }}" aria-label="Joshua Gilligan, home">
           <span class="identity__name">Joshua Gilligan</span>
-          <span class="identity__discipline">Machine learning × biomolecular design</span>
+          <span class="identity__discipline">Generative models / biomolecular design</span>
         </a>
 
         <nav class="site-nav" aria-label="Primary navigation">
@@ -33,7 +33,6 @@
           <figure class="portrait" data-reveal>
             <div class="portrait__image">
               <img src="{{ '/logo.jpg' | relative_url }}" alt="Portrait of Joshua Gilligan">
-              <span class="portrait__scan" aria-hidden="true"></span>
             </div>
             <figcaption>
               <span class="profile-status"><i aria-hidden="true"></i> Stanford Bioengineering</span>
@@ -41,12 +40,24 @@
           </figure>
 
           <div class="focus-note" data-reveal>
-            <span class="focus-note__label">Current focus</span>
+            <span class="focus-note__label">Research objective</span>
             <p>Generative models for functional biomolecular design.</p>
-            <div class="sequence" aria-hidden="true">
-              <span>A</span><span>C</span><span>G</span><span>T</span>
-              <i></i>
-              <span>0</span><span>1</span><span>1</span><span>0</span>
+          </div>
+
+          <div class="model-pipeline" data-reveal aria-hidden="true">
+            <div class="model-stage">
+              <span>input</span>
+              <code>ACGT / protein</code>
+            </div>
+            <i class="model-link"></i>
+            <div class="model-stage">
+              <span>representation</span>
+              <code>z [256]</code>
+            </div>
+            <i class="model-link"></i>
+            <div class="model-stage">
+              <span>objective</span>
+              <code>function ↑</code>
             </div>
           </div>
         </aside>
@@ -58,7 +69,7 @@
             {% else %}
               <span>Research profile / 01</span>
             {% endif %}
-            <span class="page-marker__signal"><i aria-hidden="true"></i> AI + biology</span>
+            <span class="page-marker__signal">sequence → latent → function</span>
           </div>
 
           <div class="content">

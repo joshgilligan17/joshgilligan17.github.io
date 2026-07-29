@@ -4,7 +4,7 @@ layout: default
 
 # About Me
 
-I am currently a PhD Candidate in Bioengineering Stanford University. My general research focus is on generative models for biomolecular design - with particular focus on functional protein design. I am currently completing a rotation in [Prof. Wah Chiu's Group] (https://www.wahchiulab.org/) at SLAC.
+I am currently a PhD Candidate in Bioengineering at Stanford University. My general research focus is on generative models for biomolecular design - with particular focus on functional protein design. I am currently completing a rotation in [Prof. Wah Chiu's Group](https://www.wahchiulab.org/) at SLAC.
 
 I aim to incorporate statistical learning, probablistic modelling and biological reasoning into physics informed machine learning models. My experimental focus is on screening techniques for designed and random libraries (yeast surface display, cDNA display, etc) and leveraging high throughput methods for model reinforcement. 
 

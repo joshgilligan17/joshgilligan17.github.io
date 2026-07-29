@@ -12,12 +12,13 @@
   var width = 0;
   var height = 0;
   var pixelRatio = 1;
+  var nodes = [];
   var lanes = [];
   var frameId = 0;
   var lastFrame = 0;
   var running = false;
   var pointer = { x: 0, y: 0, active: false };
-  var sequenceTokens = ["A", "C", "G", "T", "V", "L"];
+  var alphabet = ["A", "C", "G", "T", "V", "L", "D", "K"];
 
   function seededRandom(seed) {
     var value = seed >>> 0;
@@ -31,55 +32,33 @@
     };
   }
 
-  function tokenFor(index, count, laneIndex) {
-    var progress = index / Math.max(1, count - 1);
-
-    if (progress < 0.38) {
-      return index % 2 === 0
-        ? sequenceTokens[(index + laneIndex * 2) % sequenceTokens.length]
-        : "";
-    }
-
-    if (progress < 0.78) {
-      return index % 3 === 1 ? "z" + ((index + laneIndex) % 8) : "";
-    }
-
-    return index === count - 2 ? "f↑" : "";
-  }
-
   function buildField() {
     var random = seededRandom(1701);
-    var laneCount = width < 700 ? 2 : 3;
-    var pointCount = width < 700 ? 8 : 13;
+    var nodeCount = width < 720 ? 26 : 54;
+    var laneCount = width < 720 ? 2 : 4;
 
+    nodes = [];
     lanes = [];
 
+    for (var index = 0; index < nodeCount; index += 1) {
+      nodes.push({
+        u: 0.025 + random() * 0.95,
+        v: 0.08 + random() * 0.84,
+        size: 0.8 + random() * 1.8,
+        phase: random() * Math.PI * 2,
+        drift: 3 + random() * 8,
+        token: index % 7 === 0 ? alphabet[index % alphabet.length] : "",
+        shape: index % 3,
+      });
+    }
+
     for (var laneIndex = 0; laneIndex < laneCount; laneIndex += 1) {
-      var lane = [];
-      var baseY =
-        laneCount === 1 ? 0.5 : 0.18 + (laneIndex / (laneCount - 1)) * 0.64;
-
-      for (var pointIndex = 0; pointIndex < pointCount; pointIndex += 1) {
-        lane.push({
-          u: (pointIndex + 0.45) / pointCount,
-          v:
-            baseY +
-            Math.sin(pointIndex * 0.82 + laneIndex * 1.4) * 0.022 +
-            (random() - 0.5) * 0.024,
-          phase: random() * Math.PI * 2,
-          speed: 0.08 + random() * 0.08,
-          drift: 2 + random() * 4,
-          token: tokenFor(pointIndex, pointCount, laneIndex),
-          stage:
-            pointIndex / (pointCount - 1) < 0.38
-              ? 0
-              : pointIndex / (pointCount - 1) < 0.78
-                ? 1
-                : 2,
-        });
-      }
-
-      lanes.push(lane);
+      lanes.push({
+        y: 0.16 + laneIndex * (0.68 / Math.max(1, laneCount - 1)),
+        bend: (random() - 0.5) * 0.22,
+        phase: random(),
+        speed: 0.018 + random() * 0.012,
+      });
     }
   }
 
@@ -101,143 +80,194 @@
     if (reducedMotion.matches) draw(0);
   }
 
-  function positionFor(point, time) {
-    var x =
-      point.u * width +
-      Math.sin(time * point.speed + point.phase) * point.drift;
+  function nodePosition(node, time) {
+    var x = node.u * width + Math.sin(time * 0.11 + node.phase) * node.drift;
     var y =
-      point.v * height +
-      Math.cos(time * point.speed * 0.72 + point.phase) * point.drift;
+      node.v * height +
+      Math.cos(time * 0.085 + node.phase * 1.4) * node.drift;
 
     if (pointer.active) {
-      var deltaX = pointer.x - x;
-      var deltaY = pointer.y - y;
+      var deltaX = x - pointer.x;
+      var deltaY = y - pointer.y;
       var distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
-      var radius = 150;
+      var radius = 170;
 
       if (distance < radius && distance > 0) {
-        var influence = Math.pow(1 - distance / radius, 2) * 0.025;
-        y += deltaY * influence;
+        var force = Math.pow(1 - distance / radius, 2) * 14;
+        x += (deltaX / distance) * force;
+        y += (deltaY / distance) * force;
       }
     }
 
     return { x: x, y: y };
   }
 
-  function drawPoint(point, position) {
-    context.fillStyle =
-      point.stage === 1
-        ? "rgba(0, 115, 230, 0.16)"
-        : "rgba(12, 32, 67, 0.12)";
+  function bezierPoint(progress, start, controlOne, controlTwo, end) {
+    var inverse = 1 - progress;
+    var inverseSquared = inverse * inverse;
+    var progressSquared = progress * progress;
 
-    if (point.stage === 0) {
-      context.fillRect(position.x - 1, position.y - 1, 2, 2);
-    } else if (point.stage === 1) {
+    return {
+      x:
+        inverseSquared * inverse * start.x +
+        3 * inverseSquared * progress * controlOne.x +
+        3 * inverse * progressSquared * controlTwo.x +
+        progressSquared * progress * end.x,
+      y:
+        inverseSquared * inverse * start.y +
+        3 * inverseSquared * progress * controlOne.y +
+        3 * inverse * progressSquared * controlTwo.y +
+        progressSquared * progress * end.y,
+    };
+  }
+
+  function drawNode(node, position) {
+    context.save();
+    context.translate(position.x, position.y);
+    context.fillStyle =
+      node.shape === 1
+        ? "rgba(8, 118, 232, 0.25)"
+        : "rgba(16, 33, 62, 0.16)";
+
+    if (node.shape === 0) {
+      context.fillRect(-node.size, -node.size, node.size * 2, node.size * 2);
+    } else if (node.shape === 1) {
       context.beginPath();
-      context.arc(position.x, position.y, 1.25, 0, Math.PI * 2);
+      context.arc(0, 0, node.size, 0, Math.PI * 2);
       context.fill();
     } else {
-      context.save();
-      context.translate(position.x, position.y);
       context.rotate(Math.PI / 4);
-      context.fillRect(-1.2, -1.2, 2.4, 2.4);
-      context.restore();
+      context.fillRect(-node.size, -node.size, node.size * 2, node.size * 2);
     }
 
-    if (point.token) {
+    context.restore();
+
+    if (node.token) {
       context.font = "500 7px 'IBM Plex Mono', monospace";
-      context.fillStyle = "rgba(12, 32, 67, 0.11)";
-      context.fillText(point.token, position.x + 6, position.y - 6);
+      context.fillStyle = "rgba(16, 33, 62, 0.15)";
+      context.fillText(node.token, position.x + 7, position.y - 6);
     }
+  }
+
+  function drawNetwork(time) {
+    var positions = [];
+
+    for (var index = 0; index < nodes.length; index += 1) {
+      positions.push(nodePosition(nodes[index], time));
+    }
+
+    context.lineWidth = 0.55;
+
+    for (var source = 0; source < positions.length; source += 1) {
+      var closestIndex = -1;
+      var closestDistance = 190;
+
+      for (var target = source + 1; target < positions.length; target += 1) {
+        var deltaX = positions[source].x - positions[target].x;
+        var deltaY = positions[source].y - positions[target].y;
+        var distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+
+        if (distance < closestDistance) {
+          closestDistance = distance;
+          closestIndex = target;
+        }
+      }
+
+      if (closestIndex !== -1 && source % 2 === 0) {
+        context.beginPath();
+        context.moveTo(positions[source].x, positions[source].y);
+        context.lineTo(
+          positions[closestIndex].x,
+          positions[closestIndex].y
+        );
+        context.strokeStyle =
+          "rgba(8, 118, 232, " +
+          (0.025 + (1 - closestDistance / 190) * 0.055) +
+          ")";
+        context.stroke();
+      }
+    }
+
+    for (var nodeIndex = 0; nodeIndex < nodes.length; nodeIndex += 1) {
+      drawNode(nodes[nodeIndex], positions[nodeIndex]);
+    }
+  }
+
+  function drawLanes(time) {
+    context.setLineDash([1, 9]);
+    context.lineWidth = 0.65;
+
+    for (var index = 0; index < lanes.length; index += 1) {
+      var lane = lanes[index];
+      var start = { x: -30, y: lane.y * height };
+      var controlOne = {
+        x: width * 0.32,
+        y: (lane.y + lane.bend) * height,
+      };
+      var controlTwo = {
+        x: width * 0.68,
+        y: (lane.y - lane.bend) * height,
+      };
+      var end = { x: width + 30, y: lane.y * height };
+
+      context.beginPath();
+      context.moveTo(start.x, start.y);
+      context.bezierCurveTo(
+        controlOne.x,
+        controlOne.y,
+        controlTwo.x,
+        controlTwo.y,
+        end.x,
+        end.y
+      );
+      context.strokeStyle = "rgba(8, 118, 232, 0.07)";
+      context.stroke();
+
+      var progress = (time * lane.speed + lane.phase) % 1;
+      var pulse = bezierPoint(
+        progress,
+        start,
+        controlOne,
+        controlTwo,
+        end
+      );
+      var stage = progress < 0.35 ? 0 : progress < 0.74 ? 1 : 2;
+      var label =
+        stage === 0
+          ? alphabet[(index * 2 + Math.floor(time * 0.7)) % alphabet.length]
+          : stage === 1
+            ? "z" + ((index + 3) % 8)
+            : "f↑";
+
+      context.beginPath();
+      context.arc(pulse.x, pulse.y, stage === 1 ? 2.5 : 2, 0, Math.PI * 2);
+      context.fillStyle =
+        stage === 1
+          ? "rgba(8, 118, 232, 0.52)"
+          : "rgba(16, 33, 62, 0.3)";
+      context.fill();
+
+      context.font = "500 7px 'IBM Plex Mono', monospace";
+      context.fillStyle =
+        stage === 1
+          ? "rgba(8, 85, 166, 0.38)"
+          : "rgba(16, 33, 62, 0.24)";
+      context.fillText(label, pulse.x + 8, pulse.y - 7);
+    }
+
+    context.setLineDash([]);
   }
 
   function draw(time) {
     context.clearRect(0, 0, width, height);
-
-    var positionsByLane = [];
-
-    for (var laneIndex = 0; laneIndex < lanes.length; laneIndex += 1) {
-      var lanePositions = [];
-
-      for (var pointIndex = 0; pointIndex < lanes[laneIndex].length; pointIndex += 1) {
-        lanePositions.push(positionFor(lanes[laneIndex][pointIndex], time));
-      }
-
-      positionsByLane.push(lanePositions);
-    }
-
-    context.lineWidth = 0.6;
-    context.setLineDash([1, 6]);
-
-    for (var drawLaneIndex = 0; drawLaneIndex < lanes.length; drawLaneIndex += 1) {
-      var positions = positionsByLane[drawLaneIndex];
-
-      context.beginPath();
-      context.moveTo(positions[0].x, positions[0].y);
-
-      for (var lineIndex = 1; lineIndex < positions.length; lineIndex += 1) {
-        context.lineTo(positions[lineIndex].x, positions[lineIndex].y);
-      }
-
-      context.strokeStyle = "rgba(0, 115, 230, 0.075)";
-      context.stroke();
-
-      for (var nodeIndex = 0; nodeIndex < lanes[drawLaneIndex].length; nodeIndex += 1) {
-        drawPoint(lanes[drawLaneIndex][nodeIndex], positions[nodeIndex]);
-      }
-    }
-
-    context.setLineDash([]);
-
-    if (lanes.length > 1) {
-      context.lineWidth = 0.45;
-
-      for (var crossLane = 0; crossLane < lanes.length - 1; crossLane += 1) {
-        for (
-          var crossIndex = 2;
-          crossIndex < positionsByLane[crossLane].length;
-          crossIndex += 4
-        ) {
-          context.beginPath();
-          context.moveTo(
-            positionsByLane[crossLane][crossIndex].x,
-            positionsByLane[crossLane][crossIndex].y
-          );
-          context.lineTo(
-            positionsByLane[crossLane + 1][crossIndex].x,
-            positionsByLane[crossLane + 1][crossIndex].y
-          );
-          context.strokeStyle = "rgba(12, 32, 67, 0.035)";
-          context.stroke();
-        }
-      }
-    }
-
-    for (var pulseLane = 0; pulseLane < lanes.length; pulseLane += 1) {
-      var laneProgress = (time * 0.028 + pulseLane * 0.29) % 1;
-      var segmentFloat =
-        laneProgress * (positionsByLane[pulseLane].length - 1);
-      var segmentIndex = Math.floor(segmentFloat);
-      var segmentMix = segmentFloat - segmentIndex;
-      var start = positionsByLane[pulseLane][segmentIndex];
-      var end =
-        positionsByLane[pulseLane][
-          Math.min(segmentIndex + 1, positionsByLane[pulseLane].length - 1)
-        ];
-      var pulseX = start.x + (end.x - start.x) * segmentMix;
-      var pulseY = start.y + (end.y - start.y) * segmentMix;
-
-      context.beginPath();
-      context.arc(pulseX, pulseY, 1.6, 0, Math.PI * 2);
-      context.fillStyle = "rgba(0, 115, 230, 0.24)";
-      context.fill();
-    }
+    drawLanes(time);
+    drawNetwork(time);
   }
 
   function animate(timestamp) {
     if (!running) return;
 
-    if (timestamp - lastFrame > 40) {
+    if (timestamp - lastFrame > 32) {
       draw(timestamp / 1000);
       lastFrame = timestamp;
     }
@@ -274,11 +304,18 @@
     document.documentElement.classList.add("motion-ready");
 
     for (var index = 0; index < revealItems.length; index += 1) {
-      revealItems[index].style.setProperty("--reveal-index", String(index % 6));
+      revealItems[index].style.setProperty(
+        "--reveal-index",
+        String(index % 7)
+      );
     }
 
     if (!("IntersectionObserver" in window)) {
-      for (var fallbackIndex = 0; fallbackIndex < revealItems.length; fallbackIndex += 1) {
+      for (
+        var fallbackIndex = 0;
+        fallbackIndex < revealItems.length;
+        fallbackIndex += 1
+      ) {
         revealItems[fallbackIndex].classList.add("is-visible");
       }
       return;
@@ -286,18 +323,73 @@
 
     var observer = new IntersectionObserver(
       function (entries) {
-        for (var entryIndex = 0; entryIndex < entries.length; entryIndex += 1) {
+        for (
+          var entryIndex = 0;
+          entryIndex < entries.length;
+          entryIndex += 1
+        ) {
           if (entries[entryIndex].isIntersecting) {
             entries[entryIndex].target.classList.add("is-visible");
             observer.unobserve(entries[entryIndex].target);
           }
         }
       },
-      { rootMargin: "0px 0px -5% 0px", threshold: 0.06 }
+      { rootMargin: "0px 0px -7% 0px", threshold: 0.05 }
     );
 
-    for (var observerIndex = 0; observerIndex < revealItems.length; observerIndex += 1) {
+    for (
+      var observerIndex = 0;
+      observerIndex < revealItems.length;
+      observerIndex += 1
+    ) {
       observer.observe(revealItems[observerIndex]);
+    }
+  }
+
+  function prepareTilt() {
+    if (!finePointer.matches || reducedMotion.matches) return;
+
+    var modelWindow = document.querySelector("[data-model-window]");
+    var portrait = document.querySelector("[data-tilt]");
+
+    if (modelWindow) {
+      modelWindow.addEventListener("pointermove", function (event) {
+        var bounds = modelWindow.getBoundingClientRect();
+        var normalizedX = (event.clientX - bounds.left) / bounds.width - 0.5;
+        var normalizedY = (event.clientY - bounds.top) / bounds.height - 0.5;
+
+        modelWindow.style.transform =
+          "perspective(1100px) rotateX(" +
+          normalizedY * -2.4 +
+          "deg) rotateY(" +
+          normalizedX * 2.8 +
+          "deg)";
+      });
+
+      modelWindow.addEventListener("pointerleave", function () {
+        modelWindow.style.transform =
+          "perspective(1100px) rotateX(0deg) rotateY(0deg)";
+      });
+    }
+
+    if (portrait) {
+      portrait.addEventListener("pointermove", function (event) {
+        var bounds = portrait.getBoundingClientRect();
+        var normalizedX = (event.clientX - bounds.left) / bounds.width - 0.5;
+        var normalizedY = (event.clientY - bounds.top) / bounds.height - 0.5;
+
+        portrait.style.transform =
+          "translate3d(18px, 0, 0) perspective(700px) rotateX(" +
+          normalizedY * -5 +
+          "deg) rotateY(" +
+          normalizedX * 6 +
+          "deg) rotate(-1.5deg)";
+      });
+
+      portrait.addEventListener("pointerleave", function () {
+        portrait.style.transform =
+          "translate3d(18px, 0, 0) rotate(-1.5deg)";
+      });
     }
   }
 
@@ -326,9 +418,15 @@
   });
 
   window.addEventListener("resize", resize, { passive: true });
-  reducedMotion.addEventListener("change", handleMotionPreference);
+
+  if (typeof reducedMotion.addEventListener === "function") {
+    reducedMotion.addEventListener("change", handleMotionPreference);
+  } else {
+    reducedMotion.addListener(handleMotionPreference);
+  }
 
   resize();
   prepareReveals();
+  prepareTilt();
   start();
 })();

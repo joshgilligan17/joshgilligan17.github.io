@@ -18,7 +18,7 @@
   var lastFrame = 0;
   var running = false;
   var pointer = { x: 0, y: 0, active: false };
-  var alphabet = ["A", "C", "G", "T", "V", "L", "D", "K"];
+  var biologicalLayers = ["DNA", "RNA", "AA", "CELL", "Φ"];
 
   function seededRandom(seed) {
     var value = seed >>> 0;
@@ -47,7 +47,10 @@
         size: 0.8 + random() * 1.8,
         phase: random() * Math.PI * 2,
         drift: 3 + random() * 8,
-        token: index % 7 === 0 ? alphabet[index % alphabet.length] : "",
+        token:
+          index % 7 === 0
+            ? biologicalLayers[index % biologicalLayers.length]
+            : "",
         shape: index % 3,
       });
     }
@@ -234,10 +237,13 @@
       var stage = progress < 0.35 ? 0 : progress < 0.74 ? 1 : 2;
       var label =
         stage === 0
-          ? alphabet[(index * 2 + Math.floor(time * 0.7)) % alphabet.length]
+          ? biologicalLayers[
+              (index * 2 + Math.floor(time * 0.7)) %
+                biologicalLayers.length
+            ]
           : stage === 1
-            ? "z" + ((index + 3) % 8)
-            : "f↑";
+            ? "AI"
+            : "Φ↑";
 
       context.beginPath();
       context.arc(pulse.x, pulse.y, stage === 1 ? 2.5 : 2, 0, Math.PI * 2);

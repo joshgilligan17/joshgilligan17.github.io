@@ -1,6 +1,6 @@
 remote_theme: pages-themes/minimal@v0.2.0
 title: Joshua Gilligan
-description: Machine learning and generative models for biomolecular design.
+description: AI co-design across DNA, RNA, proteins and mammalian cells for human health.
 logo: logo.jpg
 plugins:
 - jekyll-remote-theme

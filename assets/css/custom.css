@@ -333,6 +333,10 @@ img {
   color: var(--arc-blue);
 }
 
+.page--profile .hero-title {
+  font-size: clamp(60px, 5.95vw, 87px);
+}
+
 .hero-deck {
   width: min(100%, 520px);
   margin: clamp(30px, 4vh, 46px) 0 0 clamp(20px, 4.2vw, 66px);
@@ -455,19 +459,22 @@ img {
 
 .sequence-tape__track span {
   display: grid;
-  width: 34px;
+  width: 86px;
   height: 34px;
+  flex: 0 0 86px;
   place-items: center;
   border-right: 1px solid rgba(255, 255, 255, 0.14);
   font-family: var(--mono);
-  font-size: 10px;
+  font-size: 7px;
   font-weight: 500;
+  letter-spacing: 0.08em;
   transition:
     color 200ms ease,
     background 200ms ease;
 }
 
-.sequence-tape__track span:nth-child(4n + 1) {
+.sequence-tape__track span:nth-child(5n + 1),
+.sequence-tape__track span:nth-child(5n + 4) {
   color: var(--arc-blue);
   background: var(--cream-light);
 }
@@ -536,15 +543,25 @@ img {
 
 .latent-map__core {
   position: absolute;
-  top: calc(50% - 4px);
-  left: calc(52% - 4px);
-  width: 8px;
-  height: 8px;
+  top: calc(50% - 16px);
+  left: calc(52% - 16px);
+  display: grid;
+  width: 32px;
+  height: 32px;
+  place-items: center;
   background: var(--cream-light);
   box-shadow:
     0 0 0 6px rgba(255, 255, 255, 0.12),
     0 0 24px rgba(255, 255, 255, 0.7);
   animation: core-pulse 3s ease-in-out infinite;
+}
+
+.latent-map__core span {
+  color: var(--arc-blue-deep);
+  font-family: var(--mono);
+  font-size: 7px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
 }
 
 .latent-map > i {
@@ -597,10 +614,71 @@ img {
   font-size: 5px;
 }
 
+.cell-population {
+  position: absolute;
+  right: 13px;
+  bottom: 13px;
+  width: 106px;
+  height: 70px;
+  border-right: 1px solid rgba(255, 255, 255, 0.2);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.cell-population .cell {
+  position: absolute;
+  display: block;
+  width: 25px;
+  height: 25px;
+  border: 1px solid rgba(255, 255, 255, 0.62);
+  border-radius: 46% 54% 52% 48%;
+  animation: cell-state 5.5s ease-in-out infinite;
+}
+
+.cell-population .cell i {
+  position: absolute;
+  top: 7px;
+  left: 7px;
+  width: 8px;
+  height: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.68);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.cell-population .cell--one {
+  top: 5px;
+  left: 8px;
+}
+
+.cell-population .cell--two {
+  top: 17px;
+  left: 39px;
+  animation-delay: -1.7s;
+}
+
+.cell-population .cell--three {
+  top: 3px;
+  left: 70px;
+  animation-delay: -3.4s;
+}
+
+.cell-population em {
+  position: absolute;
+  right: 5px;
+  bottom: 4px;
+  color: rgba(255, 255, 255, 0.68);
+  font-family: var(--mono);
+  font-size: 4.5px;
+  font-style: normal;
+  font-weight: 500;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
 .model-flow {
   display: grid;
-  grid-template-columns: 1fr 18px 1fr 18px 1fr;
-  gap: 8px;
+  grid-template-columns: 1fr 12px 1fr 12px 1fr 12px 1fr;
+  gap: 6px;
   align-items: center;
 }
 
@@ -641,7 +719,7 @@ img {
 .model-flow > i {
   position: relative;
   display: block;
-  width: 18px;
+  width: 12px;
   height: 1px;
   overflow: hidden;
   background: rgba(255, 255, 255, 0.25);
@@ -660,6 +738,10 @@ img {
 
 .model-flow > i:nth-of-type(2)::after {
   animation-delay: 0.6s;
+}
+
+.model-flow > i:nth-of-type(3)::after {
+  animation-delay: 1.2s;
 }
 
 .portrait-sample {
@@ -1129,6 +1211,20 @@ img {
   }
 }
 
+@keyframes cell-state {
+  0%,
+  100% {
+    border-radius: 46% 54% 52% 48%;
+    opacity: 0.5;
+    transform: translateY(0) rotate(0);
+  }
+  50% {
+    border-radius: 55% 45% 44% 56%;
+    opacity: 1;
+    transform: translateY(-4px) rotate(12deg);
+  }
+}
+
 @keyframes latent-scan {
   0%,
   12% {
@@ -1291,6 +1387,10 @@ img {
     line-height: 0.9;
   }
 
+  .page--profile .hero-title {
+    font-size: clamp(47px, 12.8vw, 68px);
+  }
+
   .hero-title span:nth-child(2) {
     margin-left: 8vw;
   }
@@ -1415,12 +1515,12 @@ img {
   }
 
   .model-flow {
-    grid-template-columns: 1fr 10px 1fr 10px 1fr;
-    gap: 5px;
+    grid-template-columns: 1fr 7px 1fr 7px 1fr 7px 1fr;
+    gap: 3px;
   }
 
   .model-flow > i {
-    width: 10px;
+    width: 7px;
   }
 
   .model-flow__stage {

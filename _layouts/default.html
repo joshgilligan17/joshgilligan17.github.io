@@ -74,6 +74,13 @@
                 Building models and experimental systems across DNA, RNA, proteins and cells to program healthier human biology.
               {% endif %}
             </p>
+            {% unless page.url contains 'papers' %}
+              <a class="hero-project-cta" href="{{ '/papers.html' | relative_url }}">
+                <span>Featured project</span>
+                <strong>MIRA</strong>
+                <em>Protein structure reasoning&nbsp; ↗</em>
+              </a>
+            {% endunless %}
           </div>
 
           <div

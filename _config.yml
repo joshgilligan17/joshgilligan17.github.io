@@ -1,4 +1,7 @@
 remote_theme: pages-themes/minimal@v0.2.0
+title: Joshua Gilligan
+description: AI co-design across DNA, RNA, proteins and mammalian cells for human health.
 logo: logo.jpg
 plugins:
-- jekyll-remote-theme # add this line to the plugins list if you already have one
+- jekyll-remote-theme
+- jekyll-seo-tag

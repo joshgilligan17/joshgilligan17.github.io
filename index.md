@@ -2,18 +2,18 @@
 layout: default
 ---
 
-# About Me
+# About the work
 
-I am currently a PhD Candidate in Bioengineering Stanford University. My general research focus is on generative models for biomolecular design - with particular focus on functional protein design. I am currently completing a rotation in [Prof. Wah Chiu's Group] (https://www.wahchiulab.org/) at SLAC.
+I am a PhD Candidate in Bioengineering at Stanford University working at the interface of AI and mammalian synthetic biology. I build co-design systems that connect models, molecular programs and cellular phenotypes—spanning DNA regulation, RNA, proteins and engineered cell state—with a focus on human health. I am currently completing a rotation in [Prof. Wah Chiu's Group](https://www.wahchiulab.org/) at SLAC.
 
-I aim to incorporate statistical learning, probablistic modelling and biological reasoning into physics informed machine learning models. My experimental focus is on screening techniques for designed and random libraries (yeast surface display, cDNA display, etc) and leveraging high throughput methods for model reinforcement. 
+My work treats biology as a full stack: specify a desired phenotype, co-design across biological layers, build in mammalian systems, measure at scale and use the result to improve the next model. I combine generative modelling, statistical learning and biological priors with experimental screening and high-throughput assays.
 
-I was fortunate enough to be a member of [Dr Valentina Boeva's Computational Cancer Genomics group](https://boevalab.inf.ethz.ch/) at ETH Zürich, where I worked on antibody design models and transcription factor binding prediction. Prior to my Master's, I was at the London School of Economics and Political Science studying Actuarial Science. More recently, I was a visiting researcher in the [Protein Engineering group](http://www.proteindesign.org/) under Dr Possu Huang while completing my MSc Statistics at ETH Zürich. 
+My path into this work spans computational cancer genomics, antibody design, transcription-factor binding prediction, protein engineering and statistics. I was a member of [Dr Valentina Boeva's Computational Cancer Genomics group](https://boevalab.inf.ethz.ch/) at ETH Zürich and later a visiting researcher in the [Protein Engineering group](http://www.proteindesign.org/) under Dr Possu Huang while completing my MSc Statistics at ETH Zürich. Before that, I studied Actuarial Science at the London School of Economics and Political Science.
 
-If you are interested in chatting ML, biology, statistics, cooking, photography or anything else - reach out!
+If you are interested in AI co-design, mammalian cell engineering, biological foundation models, experimental systems—or cooking and photography—reach out.
 
 # CV
 You can read my CV [here](./cv.pdf)
 
 # Projects
-Read my recent research papers [here](./papers.md)
+Explore the featured project [here](./papers.html)

@@ -16,4 +16,4 @@ If you are interested in AI co-design, mammalian cell engineering, biological fo
 You can read my CV [here](./cv.pdf)
 
 # Projects
-Read my recent research papers [here](./papers.md)
+Explore the featured project [here](./papers.html)

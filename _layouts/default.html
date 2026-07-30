@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="{{ '/assets/css/style.css?v=' | append: site.github.build_revision | relative_url }}">
     {% include head-custom.html %}
   </head>
-  <body class="{% if page.url contains 'papers' %}page--research{% else %}page--profile{% endif %}">
+  <body class="{% if page.feature_project %}page--project-feature{% elsif page.url contains 'papers' %}page--research{% else %}page--profile{% endif %}">
     <a class="skip-link" href="#main-content">Skip to content</a>
     <canvas id="bio-field" aria-hidden="true"></canvas>
 
@@ -25,12 +25,17 @@
 
         <nav class="site-nav" aria-label="Primary navigation">
           <a href="{{ '/' | relative_url }}" {% if page.url == '/' %}aria-current="page"{% endif %}><span>01</span> About</a>
-          <a href="{{ '/papers.html' | relative_url }}" {% if page.url contains 'papers' %}aria-current="page"{% endif %}><span>02</span> Research</a>
+          <a href="{{ '/papers.html' | relative_url }}" {% if page.url contains 'papers' %}aria-current="page"{% endif %}><span>02</span> Projects</a>
           <a href="{{ '/cv.pdf' | relative_url }}"><span>03</span> CV ↗</a>
           <a href="https://github.com/joshgilligan17"><span>04</span> GitHub ↗</a>
         </nav>
       </header>
 
+      {% if page.feature_project %}
+      <main id="main-content" class="site-main project-main">
+        {{ content }}
+      </main>
+      {% else %}
       <main id="main-content" class="site-main">
         <section class="hero-stage" aria-labelledby="hero-title">
           <div class="hero-coordinate" data-reveal>
@@ -48,7 +53,7 @@
               {% if page.url contains 'papers' %}
                 AI co-design / molecules to mammalian cells
               {% else %}
-                Models ↔ molecules ↔ mammalian cells
+                AI co-design / mammalian synthetic biology
               {% endif %}
             </p>
             <h1 id="hero-title" class="hero-title">
@@ -57,16 +62,16 @@
                 <span>across biological</span>
                 <span class="hero-title__accent">scales.</span>
               {% else %}
-                <span>Design with AI.</span>
-                <span>Build in cells.</span>
-                <span class="hero-title__accent">Learn from biology.</span>
+                <span>AI co-design</span>
+                <span>for mammalian</span>
+                <span class="hero-title__accent">synthetic biology.</span>
               {% endif %}
             </h1>
             <p class="hero-deck">
               {% if page.url contains 'papers' %}
                 Selected work spanning generative models, molecular programs and programmable cellular systems.
               {% else %}
-                A full-stack synthetic biology practice connecting computational design, programmable molecules, mammalian cells and experimental feedback.
+                Building models and experimental systems across DNA, RNA, proteins and cells to program healthier human biology.
               {% endif %}
             </p>
           </div>
@@ -188,6 +193,7 @@
           </article>
         </section>
       </main>
+      {% endif %}
 
       <footer class="site-footer" data-reveal>
         <span>Joshua Gilligan</span>
@@ -197,5 +203,8 @@
     </div>
 
     <script src="{{ '/assets/js/bio-field.js' | relative_url }}" defer></script>
+    {% if page.feature_project %}
+      <script src="{{ '/assets/js/mira-structure.js' | relative_url }}" defer></script>
+    {% endif %}
   </body>
 </html>

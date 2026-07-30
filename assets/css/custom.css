@@ -242,6 +242,33 @@ img {
   transform-origin: left;
 }
 
+.site-nav .site-nav__projects {
+  padding: 7px 10px;
+  color: var(--cream-light);
+  background: var(--arc-blue);
+}
+
+.site-nav .site-nav__projects span {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.site-nav .site-nav__projects::before {
+  display: none;
+}
+
+.site-nav .site-nav__projects:hover,
+.site-nav .site-nav__projects[aria-current="page"] {
+  color: var(--cream-light);
+  background: var(--ink);
+  box-shadow: none;
+  transform: translateY(-1px);
+}
+
+.site-nav .site-nav__projects:hover span,
+.site-nav .site-nav__projects[aria-current="page"] span {
+  color: rgba(255, 255, 255, 0.72);
+}
+
 .site-main {
   width: auto;
   margin: 0;
@@ -833,33 +860,6 @@ img {
   letter-spacing: 0.07em;
 }
 
-.hero-thesis {
-  z-index: 4;
-  grid-column: 1 / 4;
-  grid-row: 3;
-  align-self: end;
-  padding-top: 15px;
-  border-top: 1px solid var(--line-strong);
-}
-
-.hero-thesis > span {
-  display: block;
-  margin-bottom: 9px;
-  color: var(--arc-blue-deep);
-  font-family: var(--mono);
-  font-size: 7px;
-  font-weight: 500;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
-.hero-thesis p {
-  max-width: 290px;
-  margin: 0;
-  font-size: 14px;
-  line-height: 1.5;
-}
-
 .hero-scroll {
   z-index: 4;
   display: flex;
@@ -904,10 +904,6 @@ img {
 
 .page--research .model-window {
   grid-column: 8 / -1;
-}
-
-.page--research .hero-thesis {
-  grid-column: 1 / 5;
 }
 
 .content-atlas {
@@ -2283,10 +2279,6 @@ img {
     width: 150px;
   }
 
-  .hero-thesis {
-    grid-column: 1 / 5;
-  }
-
   .hero-scroll {
     display: none;
   }
@@ -2415,18 +2407,6 @@ img {
     align-self: flex-start;
     margin: -92px 0 0;
     transform: translate3d(0, 0, 0) rotate(-1.5deg);
-  }
-
-  .hero-thesis,
-  .page--research .hero-thesis {
-    width: min(72%, 320px);
-    order: 4;
-    align-self: flex-end;
-    margin-top: 48px;
-  }
-
-  .page--research .hero-thesis {
-    align-self: flex-start;
   }
 
   .content-atlas {
@@ -2679,10 +2659,6 @@ img {
   .portrait-sample {
     width: 112px;
     margin-top: -74px;
-  }
-
-  .hero-thesis {
-    width: 80%;
   }
 
   .content-atlas {

@@ -25,7 +25,7 @@
 
         <nav class="site-nav" aria-label="Primary navigation">
           <a href="{{ '/' | relative_url }}" {% if page.url == '/' %}aria-current="page"{% endif %}><span>01</span> About</a>
-          <a href="{{ '/papers.html' | relative_url }}" {% if page.url contains 'papers' %}aria-current="page"{% endif %}><span>02</span> Projects</a>
+          <a class="site-nav__projects" href="{{ '/papers.html' | relative_url }}" {% if page.url contains 'papers' %}aria-current="page"{% endif %}><span>02</span> Projects</a>
           <a href="{{ '/cv.pdf' | relative_url }}"><span>03</span> CV ↗</a>
           <a href="https://github.com/joshgilligan17"><span>04</span> GitHub ↗</a>
         </nav>
@@ -74,13 +74,6 @@
                 Building models and experimental systems across DNA, RNA, proteins and cells to program healthier human biology.
               {% endif %}
             </p>
-            {% unless page.url contains 'papers' %}
-              <a class="hero-project-cta" href="{{ '/papers.html' | relative_url }}">
-                <span>Featured project</span>
-                <strong>MIRA</strong>
-                <em>Protein structure reasoning&nbsp; ↗</em>
-              </a>
-            {% endunless %}
           </div>
 
           <div

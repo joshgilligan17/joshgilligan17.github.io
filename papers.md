@@ -16,7 +16,7 @@ feature_project: true
       <span>MIRA</span>
       <small>Molecular Intelligence<br>and Reasoning Agent</small>
     </h1>
-    <p class="mira-tagline">Reason over structures,<br>not just sequences.</p>
+    <p class="mira-tagline">Reasons over structures,<br>not just sequences.</p>
     <p class="mira-lede">MIRA is a planning-first agent that turns questions about biomolecular structures into validated tool calls, structural evidence and interpretable decisions.</p>
 
     <div class="mira-actions">
@@ -43,7 +43,7 @@ feature_project: true
 
     <div class="mira-query" aria-hidden="true">
       <span>QUERY / 01</span>
-      <p>Which candidate binder has the strongest structural evidence?</p>
+      <p>Which of the candidate binders have the most favourable interactions?</p>
     </div>
 
     <div class="mira-plan" aria-hidden="true">
@@ -82,7 +82,7 @@ feature_project: true
 
   <div class="mira-hero-note" data-reveal>
     <span>Project thesis</span>
-    <p>Generated proteins are plentiful. Structural judgment is still scarce. MIRA turns inspection into a reproducible reasoning workflow.</p>
+    <p>Protein design is still bottlenecked by filtering. MIRA turns inspection into a reproducible reasoning workflow.</p>
   </div>
 </section>
 

@@ -37,26 +37,35 @@
       </main>
       {% else %}
       <main id="main-content" class="site-main">
-        <section class="hero-stage" aria-labelledby="hero-title">
-          <div class="hero-copy" data-reveal>
+        <section class="hero-stage{% unless page.url contains 'papers' %} hero-stage--profile{% endunless %}" aria-labelledby="{% if page.url contains 'papers' %}hero-title{% else %}profile-intro-title{% endif %}">
+          {% unless page.url contains 'papers' %}
+          <div class="hero-intro" data-reveal>
+            <h1 id="profile-intro-title">{{ page.intro_title | default: 'Re: me' }}</h1>
+            <div class="hero-intro__copy">
+              {{ page.intro | markdownify }}
+            </div>
+          </div>
+          {% endunless %}
+
+          <div class="hero-copy{% unless page.url contains 'papers' %} hero-copy--visual-heading{% endunless %}" data-reveal>
             <p class="hero-kicker">
               {% if page.url contains 'papers' %}
                 AI co-design / molecules to mammalian cells
               {% else %}
-                AI co-design / mammalian synthetic biology
+                Generative AI / human health
               {% endif %}
             </p>
-            <h1 id="hero-title" class="hero-title">
-              {% if page.url contains 'papers' %}
+            {% if page.url contains 'papers' %}
+              <h1 id="hero-title" class="hero-title">
                 <span>Designing</span>
                 <span>across biological</span>
                 <span class="hero-title__accent">scales.</span>
-              {% else %}
-                <span>AI co-design</span>
-                <span>for mammalian</span>
-                <span class="hero-title__accent">synthetic biology.</span>
-              {% endif %}
-            </h1>
+              </h1>
+            {% else %}
+              <h2 id="hero-title" class="hero-title">
+                AI co-design for mammalian synthetic biology.
+              </h2>
+            {% endif %}
             <p class="hero-deck">
               {% if page.url contains 'papers' %}
                 Selected work spanning generative models, molecular programs and programmable cellular systems.

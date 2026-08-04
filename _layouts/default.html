@@ -11,7 +11,6 @@
   </head>
   <body class="{% if page.feature_project %}page--project-feature{% elsif page.url contains 'papers' %}page--research{% else %}page--profile{% endif %}">
     <a class="skip-link" href="#main-content">Skip to content</a>
-    <canvas id="bio-field" aria-hidden="true"></canvas>
 
     <div class="site-shell">
       <header class="site-header" data-reveal>
@@ -45,6 +44,16 @@
               {{ page.intro | markdownify }}
             </div>
           </div>
+
+          <figure class="hero-portrait">
+            <div class="hero-portrait__image">
+              <img src="{{ '/logo.jpg' | relative_url }}" alt="Joshua Gilligan overlooking Zürich">
+            </div>
+            <figcaption>
+              <span>JOSHUA GILLIGAN</span>
+              <span>ZÜRICH</span>
+            </figcaption>
+          </figure>
           {% endunless %}
 
           <div class="hero-copy{% unless page.url contains 'papers' %} hero-copy--visual-heading{% endunless %}" data-reveal>
@@ -75,35 +84,15 @@
             </p>
           </div>
 
-          <div
-            class="model-window"
-            data-reveal
-            role="img"
-            aria-label="Animated AI co-design loop spanning DNA, RNA, proteins, mammalian cells and phenotype"
-          >
-            <div class="model-window__inner" aria-hidden="true">
-              <div class="model-window__top">
-                <span>GENERATIVE DESIGN SPACE</span>
-                <span class="model-status"><i></i> ACTIVE</span>
-              </div>
-
-              <div class="latent-map">
-                <div class="latent-map__ring latent-map__ring--one"></div>
-                <div class="latent-map__ring latent-map__ring--two"></div>
-                <div class="latent-map__core"><span>AI</span></div>
-                <span class="design-layer design-layer--dna">DNA</span>
-                <span class="design-layer design-layer--protein">PROTEIN</span>
-                <span class="design-layer design-layer--cell">CELL</span>
-              </div>
-            </div>
-          </div>
         </section>
 
-        <section class="content-atlas" aria-label="Profile details">
-          <article class="content">
-            {{ content }}
-          </article>
-        </section>
+        {% if page.show_content != false %}
+          <section class="content-atlas" aria-label="Profile details">
+            <article class="content">
+              {{ content }}
+            </article>
+          </section>
+        {% endif %}
       </main>
       {% endif %}
 
@@ -114,9 +103,5 @@
       </footer>
     </div>
 
-    <script src="{{ '/assets/js/bio-field.js' | relative_url }}" defer></script>
-    {% if page.feature_project %}
-      <script src="{{ '/assets/js/mira-structure.js' | relative_url }}" defer></script>
-    {% endif %}
   </body>
 </html>

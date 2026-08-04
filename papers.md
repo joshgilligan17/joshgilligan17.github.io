@@ -27,20 +27,6 @@ feature_project: true
     </div>
   </div>
 
-  <div
-    class="mira-visual"
-    data-mira-visual
-    data-reveal
-    role="img"
-    aria-label="Animated protein backbone surrounded by a planning-first reasoning loop, structural analysis tools and evidence synthesis"
-  >
-    <div class="mira-visual__top" aria-hidden="true">
-      <span>MIRA / STRUCTURE WORKSPACE</span>
-      <span class="mira-live"><i></i> REASONING ACTIVE</span>
-    </div>
-
-    <canvas id="mira-structure" aria-hidden="true"></canvas>
-  </div>
 </section>
 
 <section class="mira-system">
@@ -77,36 +63,9 @@ feature_project: true
   </div>
 </section>
 
-<section class="mira-build">
-  <div class="mira-build__copy" data-reveal>
-    <span>Built / 03</span>
-    <h2>One agent.<br>Three working surfaces.</h2>
-    <p>MIRA is not a single chat interface. It connects a Python reasoning agent, batch structure analysis and a local or hostable research workspace.</p>
-    <a href="https://github.com/joshgilligan17/MIRA_Public" target="_blank" rel="noopener">View implementation details ↗</a>
-  </div>
-
-  <div class="mira-build__grid">
-    <article data-reveal>
-      <span>CLI AGENT</span>
-      <strong>Ask, inspect, execute.</strong>
-      <p>Interactive and plan-only modes for single-structure reasoning.</p>
-    </article>
-    <article data-reveal>
-      <span>BATCH TRIAGE</span>
-      <strong>Compare design sets.</strong>
-      <p>Parallel analysis and joint ranking across PDB, CIF and mmCIF files.</p>
-    </article>
-    <article data-reveal>
-      <span>RESEARCH WORKSPACE</span>
-      <strong>See the evidence.</strong>
-      <p>FastAPI and React workspace with jobs, tables, 3D inspection and reports.</p>
-    </article>
-  </div>
-</section>
-
 <section class="mira-evidence">
   <header data-reveal>
-    <span>Evaluation / 04</span>
+    <span>Evaluation / 03</span>
     <h2>Reasoning measured,<br>not merely demonstrated.</h2>
   </header>
 
@@ -134,7 +93,7 @@ feature_project: true
 
 <section class="mira-repo" data-reveal>
   <div>
-    <span>Open project / 05</span>
+    <span>Open project / 04</span>
     <h2>Inspect the agent,<br>tools and workspace.</h2>
   </div>
   <a href="https://github.com/joshgilligan17/MIRA_Public" target="_blank" rel="noopener">

@@ -3015,37 +3015,6 @@ body::before,
   letter-spacing: 0.07em;
 }
 
-.hero-copy--visual-heading {
-  position: relative;
-  z-index: 4;
-  width: min(100%, 360px);
-  grid-column: 9 / -1;
-  grid-row: 1;
-  align-self: start;
-  justify-self: end;
-  margin-top: 56px;
-  padding: 18px 20px 20px;
-  border: 1px solid var(--line);
-  background: rgba(255, 253, 246, 0.92);
-  transform: translate(-14px, 0);
-}
-
-.hero-copy--visual-heading .hero-kicker {
-  margin-bottom: 10px;
-}
-
-.hero-copy--visual-heading .hero-title {
-  max-width: 360px;
-  font-size: clamp(24px, 2.1vw, 30px);
-  line-height: 1.03;
-  letter-spacing: -0.045em;
-}
-
-.hero-copy--visual-heading .hero-deck {
-  margin-top: 12px;
-  font-size: clamp(12px, 0.9vw, 14px);
-}
-
 .hero-stage--profile .model-window {
   position: absolute;
   z-index: 1;
@@ -3448,11 +3417,6 @@ body::before,
     transform: translate(18px, -16px) rotate(-1.6deg);
   }
 
-  .hero-copy--visual-heading {
-    width: 300px;
-    grid-column: 2;
-  }
-
   .hero-stage--profile .model-window {
     top: 154px;
     right: -18px;
@@ -3460,13 +3424,6 @@ body::before,
     min-height: 270px;
   }
 
-  .hero-copy--visual-heading .hero-title {
-    font-size: 26px;
-  }
-
-  .hero-copy--visual-heading {
-    transform: translate(-10px, 14px);
-  }
 }
 
 @media (max-width: 780px) {
@@ -3511,17 +3468,6 @@ body::before,
 
   .hero-portrait:hover {
     transform: translateY(-3px) rotate(-0.5deg);
-  }
-
-  .hero-copy--visual-heading {
-    width: 100%;
-    order: 3;
-    margin-top: 34px;
-    transform: translateY(14px);
-  }
-
-  .page--profile .hero-copy--visual-heading .hero-title {
-    font-size: clamp(29px, 8.5vw, 38px);
   }
 
   .hero-stage--profile .model-window {

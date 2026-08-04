@@ -56,34 +56,6 @@
           </figure>
           {% endunless %}
 
-          <div class="hero-copy{% unless page.url contains 'papers' %} hero-copy--visual-heading{% endunless %}" data-reveal>
-            <p class="hero-kicker">
-              {% if page.url contains 'papers' %}
-                AI co-design / molecules to mammalian cells
-              {% else %}
-                Generative AI / human health
-              {% endif %}
-            </p>
-            {% if page.url contains 'papers' %}
-              <h1 id="hero-title" class="hero-title">
-                <span>Designing</span>
-                <span>across biological</span>
-                <span class="hero-title__accent">scales.</span>
-              </h1>
-            {% else %}
-              <h2 id="hero-title" class="hero-title">
-                AI co-design for mammalian synthetic biology.
-              </h2>
-            {% endif %}
-            <p class="hero-deck">
-              {% if page.url contains 'papers' %}
-                Selected work spanning generative models, molecular programs and programmable cellular systems.
-              {% else %}
-                Generative AI across DNA, Protein and Cell to program human health
-              {% endif %}
-            </p>
-          </div>
-
         </section>
 
         {% if page.show_content != false %}

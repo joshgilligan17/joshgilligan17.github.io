@@ -1,7 +1,33 @@
-remote_theme: pages-themes/minimal@v0.2.0
 title: Joshua Gilligan
 description: AI co-design across DNA, RNA, proteins and mammalian cells for human health.
+url: https://joshgilligan17.github.io
+baseurl: ""
+timezone: America/Los_Angeles
 logo: logo.jpg
+permalink: /blog/:title/
 plugins:
-- jekyll-remote-theme
 - jekyll-seo-tag
+defaults:
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: post
+      author: Joshua Gilligan
+exclude:
+  - README.md
+  - DESIGN.md
+  - Gemfile
+  - Gemfile.lock
+  - assets/js
+  - assets/css/custom.css
+  - assets/css/layout-studies.css
+  - layout-a.html
+  - layout-b.html
+  - layout-c.html
+  - layout-d.html
+  - layout-e.html
+  - layout-f.html
+  - personal-1.html
+  - personal-2.html
+  - personal-3.html

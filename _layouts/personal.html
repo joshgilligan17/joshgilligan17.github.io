@@ -1,0 +1,43 @@
+{% assign is_blog = false %}
+{% if page.url contains '/blog/' %}{% assign is_blog = true %}{% endif %}
+<!doctype html>
+<html lang="{{ site.lang | default: 'en-US' }}">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% seo %}
+    <meta name="theme-color" content="#ffffff">
+    <link rel="stylesheet" href="{{ '/assets/css/personal.css' | relative_url }}">
+    {% if page.personal_variant %}<link rel="stylesheet" href="{{ '/assets/css/personal-variations.css' | relative_url }}">{% endif %}
+  </head>
+  <body class="{% if page.home %}personal-home{% else %}personal-page{% endif %}{% if page.personal_variant %} variation variation--{{ page.personal_variant }}{% endif %}{% if is_blog %} journal-page{% endif %}">
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <div class="personal-shell">
+      {% unless page.home %}
+      <header class="personal-header">
+        <div class="personal-heading-row">
+          <a class="personal-name" href="{{ '/' | relative_url }}">Joshua Gilligan</a>
+          {% if is_blog %}{% include loop-study.svg %}{% endif %}
+        </div>
+        {% include personal-nav.html %}
+      </header>
+      {% endunless %}
+      {% if is_blog %}
+      <div class="journal-frame">
+        <aside class="journal-navigation" aria-labelledby="post-index-title">{% include post-index.html %}</aside>
+        <main id="main-content" tabindex="-1">{{ content }}</main>
+      </div>
+      {% else %}
+        <main id="main-content" tabindex="-1">{{ content }}</main>
+      {% endif %}
+      {% if page.personal_variant and page.show_variation_picker != false %}
+      <nav class="variation-picker" aria-label="Compare personal variations">
+        <a href="{{ '/' | relative_url }}">home</a>
+        <a href="{{ '/personal-1/' | relative_url }}"{% if page.personal_variant == 'beside' %} aria-current="page"{% endif %}>01 · Beside</a>
+        <a href="{{ '/personal-2/' | relative_url }}"{% if page.personal_variant == 'thread' %} aria-current="page"{% endif %}>02 · Thread</a>
+        <a href="{{ '/personal-3/' | relative_url }}"{% if page.personal_variant == 'aside' %} aria-current="page"{% endif %}>03 · Aside</a>
+      </nav>
+      {% endif %}
+    </div>
+  </body>
+</html>

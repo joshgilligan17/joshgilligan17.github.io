@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex">
+    {% seo %}
+    {% include head-custom.html %}
+    <link rel="stylesheet" href="{{ '/assets/css/layout-studies.css' | relative_url }}">
+  </head>
+  <body class="study study--{{ page.variant }}">
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <nav class="study-picker" aria-label="Compare layout studies">
+      <span>Layout studies</span>
+      <a href="{{ '/' | relative_url }}">New · Personal</a>
+      <a href="{{ '/layout-a/' | relative_url }}"{% if page.variant == 'a' %} aria-current="page"{% endif %}>A · Open spread</a>
+      <a href="{{ '/layout-b/' | relative_url }}"{% if page.variant == 'b' %} aria-current="page"{% endif %}>B · Margin note</a>
+      <a href="{{ '/layout-c/' | relative_url }}"{% if page.variant == 'c' %} aria-current="page"{% endif %}>C · Letter</a>
+      <a href="{{ '/layout-d/' | relative_url }}"{% if page.variant == 'd' %} aria-current="page"{% endif %}>D · Field notes</a>
+      <a href="{{ '/layout-e/' | relative_url }}"{% if page.variant == 'e' %} aria-current="page"{% endif %}>E · Bottom edge</a>
+      <a href="{{ '/layout-f/' | relative_url }}"{% if page.variant == 'f' %} aria-current="page"{% endif %}>F · Blue fold</a>
+    </nav>
+
+    {% if page.variant == 'a' %}
+    <div class="spread">
+      <header class="spread-top">
+        <a class="study-name" href="{{ '/' | relative_url }}">Joshua <em>Gilligan</em></a>
+        {% include study-nav.html %}
+      </header>
+      <main id="main-content" tabindex="-1">
+        <div class="spread-opening">
+          <h1>Re: me</h1>
+          <div class="spread-intro">{% include bio-current.html %}</div>
+          <p class="spread-note">AI &amp; mammalian <br>synthetic biology<br><span>Stanford / Arc Institute</span></p>
+        </div>
+        <div class="spread-bottom">
+          {% include study-photo.html %}
+          <div class="spread-history">{% include bio-previous.html %}</div>
+        </div>
+      </main>
+    </div>
+    {% elsif page.variant == 'b' %}
+    <div class="margin-layout">
+      <header class="margin-identity">
+        <a class="study-name" href="{{ '/' | relative_url }}">Joshua<br><em>Gilligan</em></a>
+        {% include study-photo.html %}
+        {% include study-nav.html %}
+      </header>
+      <main id="main-content" tabindex="-1">
+        <h1>Re: me</h1>
+        <div class="margin-intro">{% include bio-current.html %}</div>
+        {% include bio-previous.html %}
+        <p class="margin-signoff">Stanford / Arc Institute</p>
+      </main>
+    </div>
+    {% elsif page.variant == 'c' %}
+    <div class="letter">
+      <header class="letter-top">
+        <span>Stanford / Arc Institute</span>
+        {% include study-nav.html %}
+      </header>
+      <main id="main-content" tabindex="-1">
+        <h1>Re: me,</h1>
+        <div class="letter-body">
+          {% include study-photo.html %}
+          {% include bio-current.html %}
+          {% include bio-previous.html %}
+        </div>
+        <a class="study-name letter-signature" href="{{ '/' | relative_url }}">Joshua <em>Gilligan</em></a>
+        <p class="letter-postscript">AI &amp; mammalian synthetic biology</p>
+      </main>
+    </div>
+    {% elsif page.variant == 'd' %}
+    <div class="field-layout">
+      <header class="field-identity">
+        <a class="study-name" href="{{ '/' | relative_url }}">Joshua <em>Gilligan</em></a>
+        <span>Stanford / Arc Institute</span>
+      </header>
+      <main id="main-content" class="field-composition" tabindex="-1">
+        <h1>Re: me</h1>
+        <div class="field-intro">{% include bio-current.html %}</div>
+        {% include study-photo.html %}
+        <div class="field-history">{% include bio-previous.html %}</div>
+        <aside class="field-links">{% include study-nav.html %}</aside>
+        <p class="field-note">Models,<br>molecules,<br><em>cells.</em></p>
+      </main>
+    </div>
+    {% elsif page.variant == 'e' %}
+    <div class="edge-layout">
+      <main id="main-content" tabindex="-1">
+        <header class="edge-heading"><h1>Re: me</h1><span>AI &amp; mammalian synthetic biology</span></header>
+        <div class="edge-text">
+          <div class="edge-intro">{% include bio-current.html %}</div>
+          <div class="edge-history">{% include bio-previous.html %}</div>
+        </div>
+      </main>
+      <footer class="edge-identity">
+        {% include study-photo.html %}
+        <div><a class="study-name" href="{{ '/' | relative_url }}">Joshua <em>Gilligan</em></a><p>Stanford / Arc Institute</p></div>
+        {% include study-nav.html %}
+      </footer>
+    </div>
+    {% elsif page.variant == 'f' %}
+    <main id="main-content" class="fold-layout" tabindex="-1">
+      <section class="fold-front" aria-labelledby="fold-title">
+        <a class="study-name" href="{{ '/' | relative_url }}">Joshua <em>Gilligan</em></a>
+        <div class="fold-intro"><h1 id="fold-title">Re: me</h1>{% include bio-current.html %}</div>
+        <p class="fold-note">Stanford / Arc Institute</p>
+      </section>
+      <section class="fold-back" aria-label="Earlier work and navigation">
+        <div class="fold-photo-row">{% include study-photo.html %}<span>AI &amp;<br>mammalian<br>synthetic biology.</span></div>
+        <div class="fold-history">{% include bio-previous.html %}</div>
+        {% include study-nav.html %}
+      </section>
+    </main>
+    {% endif %}
+  </body>
+</html>

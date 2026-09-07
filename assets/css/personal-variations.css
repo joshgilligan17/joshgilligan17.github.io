@@ -1,0 +1,46 @@
+/* Quiet variations: the graphic becomes a side note, a rule, or a paired mark. */
+.variation .personal-shell { width: min(100% - 56px, 700px); padding-top: clamp(100px, 24vh, 230px); }
+.variation h1 { font-size: 2rem; }
+.variation h1 em { font-weight: 400; }
+.variation-picker { display: flex; flex-wrap: wrap; gap: 8px 20px; margin-top: 110px; font-size: 0.8125rem; color: var(--quiet); }
+.variation-picker a { text-decoration: none; }
+.variation-picker a[aria-current], .variation-picker a:hover { text-decoration: underline; color: var(--blue); }
+
+.beside-composition { display: grid; grid-template-columns: minmax(0, 1fr) 138px; gap: 46px; align-items: start; }
+.beside-copy h1 { margin-bottom: 24px; }
+.beside-copy p { max-width: 395px; }
+.beside-composition .line-study { width: 138px; height: 100px; margin: 9px 0 0; transform: rotate(-12deg); }
+.beside-copy .personal-nav { margin-top: 21px; }
+
+.variation--thread .personal-shell { max-width: 560px; }
+.thread-composition h1 { margin-bottom: 26px; }
+.name-period { color: var(--blue); }
+.thread-composition > p { margin-left: 26px; max-width: 375px; font-family: var(--serif); font-size: 1.1875rem; line-height: 1.65; }
+.thread-study { display: block; width: 100%; height: auto; margin: 22px 0 15px; color: var(--blue); }
+.thread-composition .personal-nav { justify-content: flex-end; gap: 4px 22px; }
+
+.variation--aside .personal-shell { max-width: 545px; }
+.aside-heading { display: flex; align-items: center; justify-content: space-between; gap: 36px; margin-bottom: 38px; }
+.aside-heading h1 { line-height: 1.15; margin: 0; }
+.loop-study { width: 92px; height: 70px; color: var(--blue); flex-shrink: 0; margin-right: 40px; }
+.aside-bottom { display: grid; grid-template-columns: 80px minmax(0, 1fr); gap: 36px; align-items: start; }
+.aside-bottom > p { grid-column: 2; grid-row: 1; font-family: var(--serif); font-size: 1.1875rem; line-height: 1.65; margin: 0; }
+.aside-bottom .personal-nav { grid-column: 1; grid-row: 1; flex-direction: column; align-items: flex-start; gap: 2px; font-size: 0.9375rem; }
+
+@media (max-width: 600px) {
+  .variation .personal-shell { width: calc(100% - 40px); padding-top: 90px; }
+  .beside-composition { grid-template-columns: minmax(0, 1fr); gap: 20px; }
+  .beside-composition .line-study { width: 104px; height: 76px; margin-left: auto; }
+  .variation-picker { margin-top: 70px; gap: 8px 16px; }
+  .thread-composition > p { margin-left: 14px; }
+  .thread-composition .personal-nav { gap: 4px 18px; }
+  .aside-heading { gap: 20px; }
+  .loop-study { margin-right: 0; width: 80px; }
+  .aside-bottom { grid-template-columns: 65px minmax(0, 1fr); gap: 25px; }
+}
+@media (max-width: 360px) {
+  .variation h1 { font-size: 1.875rem; }
+  .aside-bottom { grid-template-columns: minmax(0, 1fr); gap: 22px; }
+  .aside-bottom > p { grid-column: 1; grid-row: 1; }
+  .aside-bottom .personal-nav { grid-column: 1; grid-row: 2; flex-direction: row; gap: 4px 16px; }
+}

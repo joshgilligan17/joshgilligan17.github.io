@@ -1,5 +1,6 @@
 ---
 layout: default
+published: false
 title: MIRA — Molecular Intelligence and Reasoning Agent
 feature_project: true
 ---

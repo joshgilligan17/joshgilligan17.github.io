@@ -1,0 +1,18 @@
+---
+layout: personal
+title: Blog
+description: Notes on AI, biology and research by Joshua Gilligan.
+permalink: /blog/
+---
+<h1>Blog</h1>
+<p class="page-intro">Notes on AI, biology and research.</p>
+
+{% if site.posts.size > 0 %}
+{% assign latest = site.posts.first %}
+<article class="journal-latest">
+  <time class="post-date" datetime="{{ latest.date | date_to_xmlschema }}">{{ latest.date | date: '%B %-d, %Y' }}</time>
+  <h2><a href="{{ latest.url | relative_url }}">{{ latest.title | escape }}</a></h2>
+  {% if latest.description %}<p>{{ latest.description | escape }}</p>{% else %}{{ latest.excerpt }}{% endif %}
+  <a href="{{ latest.url | relative_url }}">Read post</a>
+</article>
+{% endif %}

@@ -2,78 +2,32 @@
 <html lang="{{ site.lang | default: 'en-US' }}">
   <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
     {% seo %}
-    <link rel="stylesheet" href="{{ '/assets/css/style.css?v=' | append: site.github.build_revision | relative_url }}">
     {% include head-custom.html %}
   </head>
-  <body class="{% if page.feature_project %}page--project-feature{% elsif page.url contains 'papers' %}page--research{% else %}page--profile{% endif %}">
+  <body>
     <a class="skip-link" href="#main-content">Skip to content</a>
-
     <div class="site-shell">
-      <header class="site-header" data-reveal>
-        <a class="identity" href="{{ '/' | relative_url }}" aria-label="Joshua Gilligan, home">
-          <span class="identity__mark" aria-hidden="true">JG</span>
-          <span class="identity__text">
-            <span class="identity__name">Joshua Gilligan</span>
-            <span class="identity__discipline">AI × mammalian synthetic biology</span>
-          </span>
-        </a>
-
-        <nav class="site-nav" aria-label="Primary navigation">
-          <a href="{{ '/' | relative_url }}" {% if page.url == '/' %}aria-current="page"{% endif %}><span>01</span> About</a>
-          <a class="site-nav__projects" href="{{ '/papers.html' | relative_url }}" {% if page.url contains 'papers' %}aria-current="page"{% endif %}><span>02</span> Projects</a>
-          <a href="{{ '/cv.pdf' | relative_url }}"><span>03</span> CV ↗</a>
-          <a href="https://github.com/joshgilligan17"><span>04</span> GitHub ↗</a>
+      <header class="site-header">
+        <div class="masthead">
+          <a class="site-name" href="{{ '/' | relative_url }}" aria-label="Joshua Gilligan, home">Joshua <em>Gilligan</em></a>
+          <p class="masthead-note">AI &amp; mammalian <br>synthetic biology.<span>Stanford / Arc Institute</span></p>
+        </div>
+        <nav class="site-nav" aria-label="Main navigation">
+          <a href="{{ '/' | relative_url }}"{% if page.url == '/' %} aria-current="page"{% endif %}>About</a>
+          <a href="{{ '/blog/' | relative_url }}"{% if page.url contains '/blog/' %} aria-current="{% if page.layout == 'post' %}true{% else %}page{% endif %}"{% endif %}>Blog</a>
+          <a href="{{ '/cv.pdf' | relative_url }}">CV</a>
+          <a href="https://github.com/joshgilligan17">GitHub</a>
         </nav>
       </header>
-
-      {% if page.feature_project %}
-      <main id="main-content" class="site-main project-main">
+      <main id="main-content"{% if page.layout == 'post' %} class="reading-page"{% endif %} tabindex="-1">
         {{ content }}
       </main>
-      {% else %}
-      <main id="main-content" class="site-main">
-        <section class="hero-stage{% unless page.url contains 'papers' %} hero-stage--profile{% endunless %}" aria-labelledby="{% if page.url contains 'papers' %}hero-title{% else %}profile-intro-title{% endif %}">
-          {% unless page.url contains 'papers' %}
-          <div class="hero-intro" data-reveal>
-            <h1 id="profile-intro-title">{{ page.intro_title | default: 'Re: me' }}</h1>
-            <div class="hero-intro__copy">
-              {{ page.intro | markdownify }}
-            </div>
-          </div>
-
-          <figure class="hero-portrait">
-            <div class="hero-portrait__image">
-              <img src="{{ '/logo.jpg' | relative_url }}" alt="Joshua Gilligan overlooking Zürich">
-            </div>
-            <figcaption>
-              <span>JOSHUA GILLIGAN</span>
-              <span>ZÜRICH</span>
-            </figcaption>
-          </figure>
-          {% endunless %}
-
-        </section>
-
-        {% if page.show_content != false %}
-          <section class="content-atlas" aria-label="Profile details">
-            <article class="content">
-              {{ content }}
-            </article>
-          </section>
-        {% endif %}
-      </main>
-      {% endif %}
-
-      <footer class="site-footer" data-reveal>
+      <footer class="site-footer">
         <span>Joshua Gilligan</span>
-        <span>AI × mammalian synthetic biology <i aria-hidden="true">/</i> {{ site.time | date: '%Y' }}</span>
-        <a href="https://github.com/joshgilligan17">GitHub ↗</a>
+        <span>{{ site.time | date: '%Y' }}</span>
       </footer>
     </div>
-
   </body>
 </html>

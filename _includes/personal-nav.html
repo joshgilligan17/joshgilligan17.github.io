@@ -1,0 +1,7 @@
+<nav class="personal-nav" aria-label="Main navigation">
+  {% unless page.home %}<a href="{{ '/' | relative_url }}">home</a>{% endunless %}
+  <a href="{{ '/about/' | relative_url }}"{% if page.url == '/about/' %} aria-current="page"{% endif %}>about</a>
+  <a href="{{ '/blog/' | relative_url }}"{% if page.url contains '/blog/' %} aria-current="{% if page.layout == 'post' %}true{% else %}page{% endif %}"{% endif %}>blog</a>
+  <a href="{{ '/cv.pdf' | relative_url }}">cv</a>
+  <a href="https://github.com/joshgilligan17">github</a>
+</nav>

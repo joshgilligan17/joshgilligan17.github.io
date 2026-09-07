@@ -1,0 +1,39 @@
+---
+layout: personal
+---
+{% assign introduction = 'I work on AI and mammalian synthetic biology, from molecules to cells.' %}
+{% if page.personal_variant == 'beside' %}
+<div class="beside-composition">
+  <div class="beside-copy">
+    <h1>Joshua <em>Gilligan</em></h1>
+    <p>{{ introduction }}</p>
+    {% include personal-nav.html %}
+  </div>
+  {% include line-study.svg %}
+</div>
+{% elsif page.personal_variant == 'thread' %}
+<div class="thread-composition">
+  <h1>Joshua Gilligan<span class="name-period" aria-hidden="true">.</span></h1>
+  <p>{{ introduction }}</p>
+  <svg class="thread-study" viewBox="0 0 480 68" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+    <g stroke="currentColor" stroke-width="1.2" stroke-linecap="round">
+      <path d="M2 30C90 30 112 31 159 31S218 52 250 43S275 10 303 22S348 44 387 35S435 31 477 31"/>
+      <path d="M2 35C100 35 130 35 163 36S219 17 248 24S278 55 305 42S350 26 387 35S438 37 477 37"/>
+    </g>
+    <circle cx="2" cy="30" r="2" fill="currentColor"/>
+    <circle cx="477" cy="37" r="2" fill="currentColor"/>
+  </svg>
+  {% include personal-nav.html %}
+</div>
+{% else %}
+<div class="aside-composition">
+  <header class="aside-heading">
+    <h1>Joshua<br><em>Gilligan</em></h1>
+    {% include loop-study.svg %}
+  </header>
+  <div class="aside-bottom">
+    <p>{{ introduction }}</p>
+    {% include personal-nav.html %}
+  </div>
+</div>
+{% endif %}

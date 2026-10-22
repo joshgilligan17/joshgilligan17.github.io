@@ -15,6 +15,7 @@ layout: personal
 <div class="thread-composition">
   <h1>Joshua Gilligan<span class="name-period" aria-hidden="true">.</span></h1>
   <p>{{ introduction }}</p>
+  {% if page.show_research %}{% include research-papers.html %}{% endif %}
   <svg class="thread-study" viewBox="0 0 480 68" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
     <g stroke="currentColor" stroke-width="1.2" stroke-linecap="round">
       <path d="M2 30C90 30 112 31 159 31S218 52 250 43S275 10 303 22S348 44 387 35S435 31 477 31"/>

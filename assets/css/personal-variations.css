@@ -15,9 +15,27 @@
 .variation--thread .personal-shell { max-width: 560px; }
 .thread-composition h1 { margin-bottom: 26px; }
 .name-period { color: var(--blue); }
-.thread-composition > p { margin-left: 26px; max-width: 375px; font-family: var(--serif); font-size: 1.1875rem; line-height: 1.65; }
+.thread-composition > p { margin-left: 26px; max-width: 375px; font-family: var(--serif); font-size: 1.125rem; line-height: 1.65; }
 .thread-study { display: block; width: 100%; height: auto; margin: 22px 0 15px; color: var(--blue); }
 .thread-composition .personal-nav { justify-content: flex-end; gap: 4px 22px; }
+
+.research-papers { margin: 34px 0 8px 26px; }
+.research-papers__heading { margin: 0 0 22px; font-family: var(--serif); font-size: 1.25rem; font-style: normal; font-weight: 400; color: var(--ink); }
+.research-paper { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 18px; align-items: center; }
+.research-paper + .research-paper { margin-top: 28px; }
+.research-paper__graphic {
+  display: block;
+  width: 64px;
+  height: 72px;
+  background-color: var(--blue);
+  -webkit-mask: var(--research-image) center / contain no-repeat;
+  mask: var(--research-image) center / contain no-repeat;
+}
+.research-paper h3 { margin: 0 0 7px; font-size: 1.125rem; line-height: 1.4; letter-spacing: 0.025em; }
+.research-paper h3 a { text-decoration: none; }
+.research-paper h3 a:hover { text-decoration: underline; }
+.research-paper__text p { margin: 0; max-width: 340px; font-family: var(--serif); font-size: 1.125rem; line-height: 1.65; }
+.research-paper__links { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: 10px; font-size: 1rem; }
 
 .variation--aside .personal-shell { max-width: 545px; }
 .aside-heading { display: flex; align-items: center; justify-content: space-between; gap: 36px; margin-bottom: 38px; }
@@ -33,6 +51,9 @@
   .beside-composition .line-study { width: 104px; height: 76px; margin-left: auto; }
   .variation-picker { margin-top: 70px; gap: 8px 16px; }
   .thread-composition > p { margin-left: 14px; }
+  .research-papers { margin-left: 14px; }
+  .research-paper { grid-template-columns: 48px minmax(0, 1fr); gap: 14px; }
+  .research-paper__graphic { width: 48px; height: 60px; }
   .thread-composition .personal-nav { gap: 4px 18px; }
   .aside-heading { gap: 20px; }
   .loop-study { margin-right: 0; width: 80px; }

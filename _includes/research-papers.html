@@ -1,0 +1,16 @@
+<section class="research-papers" aria-labelledby="recent-work-title">
+  <h2 id="recent-work-title" class="research-papers__heading">Recent Work and Contributions</h2>
+  {% for paper in site.data.research %}
+  <article class="research-paper">
+    <span class="research-paper__graphic" aria-hidden="true" style="--research-image: url('{{ paper.graphic | relative_url }}')"></span>
+    <div class="research-paper__text">
+      <h3><a href="{{ paper.paper_url }}">{{ paper.title | escape }}</a></h3>
+      <p>{{ paper.byline | escape }}</p>
+      <div class="research-paper__links">
+        <a href="{{ paper.paper_url }}" aria-label="{{ paper.title | escape }} paper on bioRxiv">paper <span aria-hidden="true">↗</span></a>
+        <a href="{{ paper.website_url }}" aria-label="{{ paper.title | escape }} project website">website <span aria-hidden="true">↗</span></a>
+      </div>
+    </div>
+  </article>
+  {% endfor %}
+</section>
